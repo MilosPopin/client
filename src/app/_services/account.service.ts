@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 })
 export class AccountService {
     baseUrl= 'https://localhost:5001/api/'
-    private currentUserSource = new ReplaySubject<User | null>(1); 
+    private currentUserSource = new ReplaySubject<User | null | boolean>(1); 
     currentUser$=this.currentUserSource.asObservable();
     constructor (private http: HttpClient) {}
 
@@ -35,7 +35,7 @@ export class AccountService {
 
             })
         )
-    }
+        }
 
     setCurrentUser(user: User){
         this.currentUserSource.next(user);
