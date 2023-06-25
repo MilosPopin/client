@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.2.0",
+    "@angular/cdk": "^16.1.2",
     "@angular/common": "^15.2.0",
     "@angular/compiler": "^15.2.0",
     "@angular/core": "^15.2.0",
@@ -24,6 +25,7 @@
     "font-awesome": "^4.7.0",
     "ngx": "^0.0.1",
     "ngx-bootstrap": "^10.2.0",
+    "ngx-spinner": "^16.0.2",
     "ngx-toastr": "^16.2.0",
     "rxjs": "^7.4.0",
     "toastr": "^2.1.4",
