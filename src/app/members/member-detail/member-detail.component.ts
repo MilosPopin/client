@@ -35,9 +35,9 @@ galleryOptions: NgxGalleryOptions[];
     const imageUrls = [];
     for (const photo of this.member.photos) {
       imageUrls.push({
-        small: photo?.Url,
-        medium: photo?.Url,
-        big: photo?.Url
+        small: photo?.url,
+        medium: photo?.url,
+        big: photo?.url
       })
     }
     return imageUrls;
