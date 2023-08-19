@@ -8,6 +8,7 @@ import { UserParams } from '../_models/userParams';
 import { Params } from '@angular/router';
 import { AccountService } from './account.service';
 import { User } from '../_models/user';
+import { getPagiantionHeaders, getPaginatedResult } from './paginationHelper';
 
 
 @Injectable({
@@ -48,7 +49,7 @@ userParams: UserParams;
       return of(response);
     }
 
-    let params = this.getPagiantionHeaders(userParams.minAge, userParams.maxAge);
+    let params = getPagiantionHeaders(userParams.minAge, userParams.maxAge);
 
     params = params.append('minAge', userParams.minAge.toString());
     params = params.append('maxAge', userParams.maxAge.toString());
@@ -57,7 +58,7 @@ userParams: UserParams;
 
 
 
-    return this.getPaginatedResult<Member>(this.baseUrl + 'users', params)
+    return getPaginatedResult<Member>(this.baseUrl + 'users', params, this.http)
     .pipe(map(response =>{
       this.memberCache.set(Object.values(userParams).join('-'), response)
       return response;
@@ -98,30 +99,10 @@ userParams: UserParams;
   }
 
   getLikes(predicate: string, pageNumber: number, pageSize: number){
-    let params = this.getPagiantionHeaders(pageNumber,pageSize);
+    let params = getPagiantionHeaders(pageNumber,pageSize);
     params = params.append('predicate', predicate);
-    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params);
+    return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http);
   }
 
-  private getPaginatedResult<T>(url: string, params: HttpParams) {
-    const paginatedResult: PaginatedResult<T | null> = new PaginatedResult<T>();
-    return this.http.get<T>(url, { observe: 'response', params }).pipe(
-      map(response => {
-      paginatedResult.result = response.body;
-        if (response.headers.get('Pagination') !== null) {
-          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
-        }
-        return paginatedResult;
-      })
-    );
-  }
-
-  private getPagiantionHeaders(pageNumber: number, pageSize: number) {
-    let params = new HttpParams();
-
-      params = params.append('pageNumber', pageNumber.toString());
-      params = params.append('itemsPerPage', pageSize.toString());
-
-      return params;
-  }
+  
 }
